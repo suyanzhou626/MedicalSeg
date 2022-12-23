@@ -1,0 +1,15 @@
+trainer:
+  logger: true
+  max_epochs: 100
+  accelerator: 'gpu'
+  devices: 1
+  auto_select_gpus: True
+model: 
+  learning_rate: 0.001
+data:
+  dataset_name: ISIC-2017
+  dataset_dir: /nvme/suyanzhou/dataset/dataset_2d/
+  data_info_dir: /nvme/suyanzhou/dataset/data_infos/
+  batch_size: 8
+  image_size: 256
+  num_workers: 4

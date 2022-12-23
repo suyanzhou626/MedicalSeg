@@ -1,0 +1,29 @@
+trainer:
+  logger: true
+  max_epochs: 100
+  accelerator: 'gpu'
+  devices: ['7']
+  auto_select_gpus: True
+  default_root_dir: './Exp/ISIC-2017/UNet'
+  callbacks:
+    class_path: pytorch_lightning.callbacks.EarlyStopping
+    init_args:
+      patience: 5
+    class_path: pytorch_lightning.callbacks.ModelCheckpoint
+    init_args:
+      monitor: "dice"
+      filename: "{epoch:02d}-{dice:.4f}"
+      save_top_k: 1 
+      mode: "max"
+
+model: 
+  learning_rate: 0.001
+  model_name: "UNet"
+
+data:
+  dataset_name: ISIC-2017
+  dataset_dir: /nvme/suyanzhou/dataset/dataset_2d/
+  data_info_dir: /nvme/suyanzhou/dataset/data_infos/
+  batch_size: 16
+  image_size: 256
+  num_workers: 8
