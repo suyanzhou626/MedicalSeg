@@ -6,7 +6,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import numpy as np
-from msdataloader_v0 import MedicalSegDataModule
+from msdataloader import MedicalSegDataModule
 from pytorch_lightning.cli import LightningCLI
 from torch import optim
 from torch.optim.lr_scheduler import StepLR
@@ -72,8 +72,6 @@ class SegModel(pl.LightningModule):
         if dataset_name not in self.test_result:
             self.test_result[dataset_name] = []
         
-        if not set(torch.unique(ori_mask).tolist()).issubset({0,1}):
-            ori_mask = (ori_mask > 0.5).type(torch.uint8)
         thres_dice = threshold_binary_dice_metrics(logits, ori_mask, up_mode=self.predict_upsample)
         self.test_result[dataset_name].append(thres_dice.item())
 

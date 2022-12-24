@@ -45,14 +45,15 @@ class MedicalDataset(Dataset):
         if self.transforms is not None:
             image_arr = np.array(image)
             mask_arr = np.array(mask)
-            
+
             if mask_arr.max() == 255:
                 mask_arr = mask_arr/255.
         
+            ori_mask = mask_arr
             # check the mask value
             # it must be in {0,1} for binary segmentation.
-            if not set(np.unique(mask_arr)).issubset({0,1}):
-                mask_arr = (mask_arr > 0.5)
+            # if not set(np.unique(mask_arr)).issubset({0,1}):
+            #         mask_arr = (mask_arr > 0.5)
             mask_arr = mask_arr.astype(np.uint8)
             transformed = self.transforms(image=image_arr, mask=mask_arr)
             image = transformed['image']
@@ -72,7 +73,7 @@ class MedicalDataset(Dataset):
         data_item['data_name'] = data_name
 
         if self.use_ori_mask:
-            data_item['ori_mask'] = mask_arr
+            data_item['ori_mask'] = ori_mask
         
         return data_item
 
